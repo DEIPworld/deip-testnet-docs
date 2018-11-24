@@ -3,10 +3,23 @@
 ----------
 
 
+.. toctree::
+    :maxdepth: 2
+    :caption: Introduction:
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+    :maxdepth: 3
+    :caption: Development:
+
+    testnet/testnet
+
+.. toctree::
+    :maxdepth: 2
+    :caption: Examples:
+
+    examples/workflows
+    examples/become-a-witness
+    examples/resync-node
 
 
 Indices and tables
