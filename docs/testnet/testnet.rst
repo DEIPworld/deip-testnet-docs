@@ -62,7 +62,7 @@ To start in detached mode::
     
     docker-compose up -d node
 
-If your account is already selected to active witnesses list, your node will start producing blocks. If not, :doc:`follow this instructions <../examples/become-a-witness>` to become a witness.
+If your account is already selected to active witnesses list, your node will start producing blocks. If not, :doc:`follow this instructions <../blockchain interactions/cli-wallet/become-a-witness>` to become a witness.
 
 =========
 Full node
@@ -115,8 +115,3 @@ or pull latest changes::
     # RESYNC_BLOCKCHAIN=1
 
 It will force node to resync on startup. It means that your database will be purged and all blocks will be resynced.
-
-.. toctree::
-    :maxdepth: 2
-
-    quick-start
