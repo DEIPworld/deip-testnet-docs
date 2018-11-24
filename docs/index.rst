@@ -3,10 +3,22 @@
 ----------
 
 
+.. toctree::
+    :maxdepth: 3
+    :caption: Introduction:
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+    :maxdepth: 3
+    :caption: Blockchain:
+
+    testnet/testnet
+    blockchain interaction/interaction
+
+.. toctree::
+    :maxdepth: 3
+    :caption: Examples:
+
+    examples/workflows
 
 
 Indices and tables
