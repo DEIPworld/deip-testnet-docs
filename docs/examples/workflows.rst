@@ -1,3 +1,3 @@
 ********************************
-Examples of CLI Wallet Workflows
+CLI Wallet Workflows
 ********************************

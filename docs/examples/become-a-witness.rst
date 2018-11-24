@@ -1,3 +1,3 @@
 ***********************
-How to become a witness
+Becoming a witness
 ***********************

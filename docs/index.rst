@@ -19,7 +19,6 @@
 
     examples/workflows
     examples/become-a-witness
-    examples/resync-node
 
 
 Indices and tables
