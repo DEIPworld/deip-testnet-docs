@@ -19,11 +19,3 @@
     :caption: Examples:
 
     examples/workflows
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
