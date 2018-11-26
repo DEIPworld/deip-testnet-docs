@@ -90,7 +90,7 @@ To start in detached mode::
     
     docker-compose up -d node
 
-If your account is already selected to active witnesses list, your node will start producing blocks. If not, :doc:`follow this instructions <../blockchain interaction/cli-wallet/become-a-witness>` to become a witness.
+If your account is already selected to active witnesses list, your node will start producing blocks. If not, :doc:`follow this instructions <../blockchain interaction/cli-wallet/wallet>` to become a witness.
 
 Run using Docker
 ----------------
