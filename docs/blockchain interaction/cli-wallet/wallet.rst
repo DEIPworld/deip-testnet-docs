@@ -2,12 +2,35 @@
 Wallet
 ******
 
+
 How to start a wallet
 =====================
 
-1. Install Docker and Docker Compose Instructions for ubuntu 16-04 `here <https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-16-04>`_ and `here <https://docs.docker.com/compose/install/#prerequisites>`_, don't skip optional step 2 to run docker without ``sudo``
+Using Docker
+------------
+1. Install Docker. Instructions for ubuntu 16-04 `here <https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-16-04>`_, don't skip optional step 2 to run docker without ``sudo``.
+2. Pull actual wallet image::
+
+    docker pull deipdev/testnet:wallet_a2aa3b6f
+
+3. Start wallet::
+
+    docker run -it -v ~/wallet:/var/lib/wallet deipdev/testnet:wallet_a2aa3b6f -s ws://82.196.2.5:8090 -w /var/lib/wallet/wallet.json
+
+* ``-v ~/data:/var/lib/wallet`` maps ``~/wallet`` folder to ``/var/lib/wallet`` folder inside container (this is wallet working directory).
+* ``-s ws://82.196.2.5:8090`` specifies node wallet will connect to. ``ws://82.196.2.5:8090`` is address of Public Testnet seed full node maintained by DEIP.
+* ``-w /var/lib/wallet/wallet.json`` specifies wallet file name. Please notice, that path to the file is **inside** the container.
+
+All settings defined above are automatically set in Compose config. You can still change them manually if you want to.
+
+Using Compose
+-------------
+
+This step is optional. You can still easily run wallet without Compose.
+
+1. Install Docker Compose. See instructions `here <https://docs.docker.com/compose/install/#prerequisites>`_.
 2. To get the latest ``docker-compose.yml`` file, clone the repository::
-    
+
     git clone https://github.com/DEIPworld/deip-testnet 
     cd deip-testnet
 
