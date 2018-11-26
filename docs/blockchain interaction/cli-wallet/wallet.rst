@@ -95,7 +95,7 @@ Parameters:
 transfer
 --------
 
-Transfer funds from one account to another. DEIP and SBD can be transferred.
+Transfer funds from one account to another.
 
 Parameters:
 
@@ -113,7 +113,7 @@ Transfer DEIP into a vesting fund represented by Common Tokens. Common Tokens ar
 Parameters:
 
 * from: The account the DEIP is coming from (type: const std::string&)
-* to: The account getting the VESTS (type: const std::string&)
+* to: The account getting the Common Tokens (type: const std::string&)
 * amount: The amount of DEIP to vest i.e. "100.00 TESTS" (type: const asset&)
 * broadcast: true if you wish to broadcast the transaction (type: bool)
 
