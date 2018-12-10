@@ -2,12 +2,35 @@
 Wallet
 ******
 
+
 How to start a wallet
 =====================
 
-1. Install Docker and Docker Compose Instructions for ubuntu 16-04 `here <https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-16-04>`_ and `here <https://docs.docker.com/compose/install/#prerequisites>`_, don't skip optional step 2 to run docker without ``sudo``
+Using Docker
+------------
+1. Install Docker. Instructions for ubuntu 16-04 `here <https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-16-04>`_, don't skip optional step 2 to run docker without ``sudo``.
+2. Pull actual wallet image::
+
+    docker pull deipdev/testnet:wallet_latest
+
+3. Start wallet::
+
+    docker run -it -v ~/wallet:/var/lib/wallet deipdev/testnet:wallet_latest -s ws://82.196.2.5:8090 -w /var/lib/wallet/wallet.json
+
+* ``-v ~/data:/var/lib/wallet`` maps ``~/wallet`` folder to ``/var/lib/wallet`` folder inside container (this is wallet working directory).
+* ``-s ws://82.196.2.5:8090`` specifies node wallet will connect to. ``ws://82.196.2.5:8090`` is address of Public Testnet seed full node maintained by DEIP.
+* ``-w /var/lib/wallet/wallet.json`` specifies wallet file name. Please notice, that path to the file is **inside** the container.
+
+All settings defined above are automatically set in Compose config. You can still change them manually if you want to.
+
+Using Compose
+-------------
+
+This step is optional. You can still easily run wallet without Compose.
+
+1. Install Docker Compose. See instructions `here <https://docs.docker.com/compose/install/#prerequisites>`_.
 2. To get the latest ``docker-compose.yml`` file, clone the repository::
-    
+
     git clone https://github.com/DEIPworld/deip-testnet 
     cd deip-testnet
 
@@ -23,14 +46,82 @@ After this wallet will start and connect to node at 82.196.2.5 (Full-Node suppor
 
 To stop the wallet, press ``Ctrl + P, Ctrl + Q``.
 
-Further actions
-===============
+Create account
+==============
 
-| :doc:`Create account using wallet <./create-account>`
-| :doc:`Become a witness <./become-a-witness>`
+In order to create an account, any other user should issue a transaction for account creation. Account who will issue this transaction will also pay account creation fee, which will be credited to new accounts Common tokens balance.
+For testnet users we prepared `shared accounts <https://github.com/DEIPworld/deip-testnet/blob/master/testnet-shared-accounts.txt>`_ that you can use for testing and creation of new accounts
+
+Create account with keys
+------------------------
+
+1. Start wallet :doc:`see this tutorial <./wallet>`
+2. Set password for wallet file::
+
+    set_password yourSecretPassword
+
+3. Unlock the wallet::
+
+    unlock yourSecretPassword
+
+4. Import private key of one of the shared accounts. Let's take 'alice' for this example::
+
+    import_key 5JGoCjh27sfuCzp7kQme5yMipaQtgdVLPiZPr9zaCwJVrSrbGYx
+
+5. Generate new keys. You can use up to 4 keys for owner, active, posting authorities and memo; or you can use single key and update them later::
+
+    suggest_brain_key
+
+.. Attention:: Make sure you saved the keys!
+
+For this example, let's say following keys were generated::
+
+    {
+    "brain_priv_key": "CHOLANE MORTIER MIZZLY ELBOW ADAYS SUNKET SUBBASS SHIMMER FLEWS KRAL EXPORT PELTATE UNBUSH CRUCIFY SULK ANNUAL",
+    "wif_priv_key": "5JEHAET62qWq1Mep3qZhWe2QhTDzF2uzWwgg6DGCify56VBrUkR",
+    "pub_key": "DEIP6ioSfo5gbaP3YJ3G7ivXATXSLbFLURsB4Y1MmgBFjfepW9qm6u"
+    }
+
+6. Create account. This method takes following parameters: creator name, new account name, json metadata (can leave empty), owner key, active key, posting key, memo, fee and boolean showing whether or not you want to broadcast this transaction::
+
+    create_account_with_keys "alice" "yourAccountName" "" DEIP6ioSfo5gbaP3YJ3G7ivXATXSLbFLURsB4Y1MmgBFjfepW9qm6u \
+    DEIP6ioSfo5gbaP3YJ3G7ivXATXSLbFLURsB4Y1MmgBFjfepW9qm6u DEIP6ioSfo5gbaP3YJ3G7ivXATXSLbFLURsB4Y1MmgBFjfepW9qm6u \
+    DEIP6ioSfo5gbaP3YJ3G7ivXATXSLbFLURsB4Y1MmgBFjfepW9qm6u "10.000 TESTS" true
+
+After transaction was included in block, your account should be created. To verify your account exists run following command:::
+
+    get_account "yourAccountName"
+
+As result you should see info about your newly created account.
+
+7. Now you can import key of your new account to wallet (see step 4) and use it.
+
+Become a witness
+================
+
+1. Сreate an account using wallet and remember the private active key
+2. Import your account key to wallet
+3. To become a witness execute ``update_witness`` command with following parameters: account name, url of page describing your intentions and ideas about supporting the network, your block signing key (public key), your proposed chain properties (account creation fee & maximum block size), boolean showing whether or not you want to broadcast this transaction. Chain properties object can be empty (default account creation fee & maximum block size values will be used), or user defined in form ``{"account_creation_fee":"1.000 TESTS","maximum_block_size":65536}``::
+
+    update_witness "yourAccountName" "yourAccountUrl" DEIP6ioSfo5gbaP3YJ3G7ivXATXSLbFLURsB4Y1MmgBFjfepW9qm6u {} true
+
+Once your transaction submitted and included in block, you can verify your account is in block producers list now. To gel a list of all block producers run ``list_witnesses`` command with parameters: lower bound block producer name (leave empty if you want to list all block producers), limit of how many entries to show::
+
+    list_witnesses "" 1000
+
+As result you should see your account name in the list.
+4. To become an active block producer you should be selected into active block producers list. To do it, you must vote for yourself. You can use any of shared accounts.::
+
+    vote_for_witness "alice" "yourAccountName" true true
+
+Now you can verify your account received votes by running ``get_witness`` command::
+
+    get_witness "yourAccountName"
+
+When your account gets enough votes, you can start a block producer node by providing ``DEIPD_WITNESS_NAME`` and ``DEIPD_PRIVATE_KEY`` parameters in ``node-config.env`` and it will start block production.
 
 Available commands
-==================
+=============================
 
 To get full list of all commands supported by wallet, execute ``help`` command while running wallet.
 
@@ -95,7 +186,7 @@ Parameters:
 transfer
 --------
 
-Transfer funds from one account to another. DEIP and SBD can be transferred.
+Transfer funds from one account to another.
 
 Parameters:
 
@@ -113,7 +204,7 @@ Transfer DEIP into a vesting fund represented by Common Tokens. Common Tokens ar
 Parameters:
 
 * from: The account the DEIP is coming from (type: const std::string&)
-* to: The account getting the VESTS (type: const std::string&)
+* to: The account getting the Common Tokens (type: const std::string&)
 * amount: The amount of DEIP to vest i.e. "100.00 TESTS" (type: const asset&)
 * broadcast: true if you wish to broadcast the transaction (type: bool)
 
