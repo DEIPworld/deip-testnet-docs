@@ -47,13 +47,13 @@ Pull latest images
 ------------------
 
 If you want to use Docker without Compose, you need to pull actual images manually. All images reside in ``deipdev/tesnet`` repository and are tagged separately for node, full node and wallet.
-Tag scheme is ``node_revision``, ``fullnode_revision`` and ``wallet_revision`` (for node, full node and wallet respectively). Actual revision is **a2aa3b6f**.
+Tag scheme is ``node_revision``, ``fullnode_revision`` and ``wallet_revision`` (for node, full node and wallet respectively). Actual revision is **latest**.
 
 Pull actual docker images::
     
-    docker pull deipdev/testnet:node_a2aa3b6f
-    docker pull deipdev/testnet:fullnode_a2aa3b6f
-    docker pull deipdev/testnet:wallet_a2aa3b6f
+    docker pull deipdev/testnet:node_latest
+    docker pull deipdev/testnet:fullnode_latest
+    docker pull deipdev/testnet:wallet_latest
 
 In case you want to use Compose, all you need to do is just run following command. It will automatically pull actual images::
 
@@ -67,6 +67,12 @@ Node data storage
 
 By default node stores all data inside container in ``/var/lib/deipd`` folder.
 Instruction how to map internal volume to a folder on host machine is **coming soon**.
+
+==========
+Seed nodes
+==========
+
+**coming soon**
 
 ===============
 Low-memory node
@@ -95,11 +101,11 @@ If your account is already selected to active witnesses list, your node will sta
 Run using Docker
 ----------------
 
-    docker run --env DEIPD_WITNESS_NAME=yourwitnessname --env DEIPD_PRIVATE_KEY=yourprivatekey deipdev/testnet:node_a2aa3b6f
+    docker run --env DEIPD_WITNESS_NAME=yourwitnessname --env DEIPD_PRIVATE_KEY=yourprivatekey deipdev/testnet:node_latest
 
 To run in detached mode use ``-d`` flag::
 
-    docker run -d --env DEIPD_WITNESS_NAME=yourwitnessname --env DEIPD_PRIVATE_KEY=yourprivatekey deipdev/testnet:node_a2aa3b6f
+    docker run -d --env DEIPD_WITNESS_NAME=yourwitnessname --env DEIPD_PRIVATE_KEY=yourprivatekey deipdev/testnet:node_latest
 
 
 =========
@@ -122,11 +128,11 @@ To launch in detached mode::
 Run using Docker
 ----------------
 
-    docker run deipdev/testnet:fullnode_a2aa3b6f
+    docker run deipdev/testnet:fullnode_latest
 
 To run in detached mode use ``-d`` flag::
 
-    docker run -d deipdev/testnet:fullnode_a2aa3b6f
+    docker run -d deipdev/testnet:fullnode_latest
 
 ======================
 Attach to running node
